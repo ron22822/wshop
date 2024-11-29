@@ -29,9 +29,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfiguration(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter, UserService userDetailsService) {
+    public SecurityConfiguration(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsService userDetailsService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }
