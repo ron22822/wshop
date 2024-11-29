@@ -118,14 +118,10 @@ public class UserService implements UserDetailsService {
         }
         User user = mapToUser(userDTO);
         user = userRepository.saveAndFlush(user);
-//        try {
-            Profile profile = new Profile();
-            profile.setProfileid(user.getUserid());
-            profile.setUser(user);
-            profileRepository.saveAndFlush(profile);
-//        }catch (Exception e){
-//            throw new ResourceNameAlreadyExistsException("Profile does not create");
-//        }
+        Profile profile = new Profile();
+        profile.setProfileid(user.getUserid());
+        profile.setUser(user);
+        profileRepository.saveAndFlush(profile);
         return mapToDto(user);
     }
 
