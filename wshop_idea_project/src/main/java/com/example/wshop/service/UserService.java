@@ -3,13 +3,20 @@ package com.example.wshop.service;
 import com.example.wshop.dto.JwtResponse;
 import com.example.wshop.dto.LoginRequest;
 import com.example.wshop.dto.UserDTO;
+import com.example.wshop.exception.ResourceNameAlreadyExistsException;
+import com.example.wshop.exception.ResourceNotFoundException;
+import com.example.wshop.model.Profile;
 import com.example.wshop.model.Role;
 import com.example.wshop.model.User;
+import com.example.wshop.repository.ProfileRepository;
 import com.example.wshop.repository.RoleRepository;
 import com.example.wshop.repository.UserRepository;
 import com.example.wshop.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,34 +37,95 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository,
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,ProfileRepository profileRepository,
                        @Lazy JwtTokenProvider jwtTokenProvider,
                        @Lazy AuthenticationManager authenticationManager,@Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.profileRepository = profileRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
 
+    public UserDTO getById(Long id){
+        return userRepository.findById(id)
+                .map(this::mapToDto)
+                .orElseThrow(()  -> new ResourceNotFoundException("User not found with Id: " + id));
+    }
+
+    public Page<UserDTO> getAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> users = userRepository.findAll(pageable);
+        return users.map(this::mapToDto);
+    }
+
     public UserDTO getByUsername(String username){
         return userRepository.findUserByUsername(username)
                 .map(this::mapToDto)
-                .orElseThrow(()  -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(()  -> new ResourceNotFoundException("User not found with username: " + username));
+    }
+
+    @Transactional
+    public UserDTO updateUserById(Long id,UserDTO userDTO){
+        User user = userRepository.findById(id)
+                .orElseThrow(()  -> new ResourceNotFoundException("User not found with Id: " + id));
+        return updateUser(user,userDTO);
+    }
+
+    @Transactional
+    public UserDTO updateUser(User user,UserDTO userDTO){
+        if(userDTO.getUsername() != null){
+            user.setUsername(userDTO.getUsername());
+        }
+        if(userDTO.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        if(userDTO.getRole() != null){
+            Role role = roleRepository.findByRolename(userDTO.getRole())
+                    .orElseThrow(() -> new ResourceNotFoundException("Role not found with rolename: " + userDTO.getRole()));
+        }
+        if(userDTO.getEmail() != null){
+            user.setEmail(userDTO.getEmail());
+        }
+
+        User userUpdate = userRepository.saveAndFlush(user);
+        return mapToDto(userUpdate);
+    }
+
+    @Transactional
+    public void deleteUserById(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(()  -> new ResourceNotFoundException("User not found with Id: " + id));
+        deleteUser(user);
+    }
+
+    @Transactional
+    public void deleteUser(User user){
+        userRepository.delete(user);
     }
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO){
         if(userRepository.findUserByUsername(userDTO.getUsername()).isPresent()){
-            throw new RuntimeException("User with that username already exists");
+            throw new ResourceNameAlreadyExistsException("User with username: "+userDTO.getUsername()+" already exists");
         }
         User user = mapToUser(userDTO);
         user = userRepository.saveAndFlush(user);
+//        try {
+            Profile profile = new Profile();
+            profile.setProfileid(user.getUserid());
+            profile.setUser(user);
+            profileRepository.saveAndFlush(profile);
+//        }catch (Exception e){
+//            throw new ResourceNameAlreadyExistsException("Profile does not create");
+//        }
         return mapToDto(user);
     }
 
@@ -92,7 +160,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username).get();
     }
 
-    private UserDTO mapToDto(User user){
+    public UserDTO mapToDto(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setUserid(user.getUserid());
         userDTO.setUsername(user.getUsername());
@@ -102,12 +170,12 @@ public class UserService implements UserDetailsService {
         return userDTO;
     }
 
-    private User mapToUser(UserDTO userDTO){
+    public User mapToUser(UserDTO userDTO){
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         Role role = roleRepository.findByRolename(userDTO.getRole())
-                .orElseThrow(() -> new RuntimeException("Role not found with rolename: " + userDTO.getRole()));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with rolename: " + userDTO.getRole()));
         user.setRole(role);
         user.setEmail(userDTO.getEmail());
         return user;
