@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,18 +34,21 @@ public class SupplierController {
         return ResponseEntity.ok(suppliers);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SupplierDTO> createSupplier(@RequestBody SupplierDTO supplierDTO) {
         SupplierDTO supplier = supplierService.createSupplier(supplierDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(supplier);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SupplierDTO> updateSupplierById(@PathVariable Long id, @RequestBody SupplierDTO supplierDTO) {
         SupplierDTO updatedSupplier = supplierService.updateSupplierById(id, supplierDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedSupplier);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable Long id) {
         supplierService.deleteSupplierById(id);

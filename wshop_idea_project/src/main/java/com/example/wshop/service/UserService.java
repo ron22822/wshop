@@ -1,13 +1,16 @@
 package com.example.wshop.service;
 
+import com.example.wshop.constant.StatusEnum;
 import com.example.wshop.dto.JwtResponse;
 import com.example.wshop.dto.LoginRequest;
 import com.example.wshop.dto.UserDTO;
 import com.example.wshop.exception.ResourceNameAlreadyExistsException;
 import com.example.wshop.exception.ResourceNotFoundException;
+import com.example.wshop.model.Order;
 import com.example.wshop.model.Profile;
 import com.example.wshop.model.Role;
 import com.example.wshop.model.User;
+import com.example.wshop.repository.OrderRepository;
 import com.example.wshop.repository.ProfileRepository;
 import com.example.wshop.repository.RoleRepository;
 import com.example.wshop.repository.UserRepository;
@@ -38,20 +41,24 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ProfileRepository profileRepository;
+    private final OrderRepository orderRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final OrderService orderService;
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository,ProfileRepository profileRepository,
-                       @Lazy JwtTokenProvider jwtTokenProvider,
+                       @Lazy JwtTokenProvider jwtTokenProvider, OrderRepository orderRepository, OrderService orderService,
                        @Lazy AuthenticationManager authenticationManager,@Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.profileRepository = profileRepository;
+        this.orderRepository = orderRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.orderService = orderService;
     }
 
     public UserDTO getById(Long id){
@@ -103,11 +110,18 @@ public class UserService implements UserDetailsService {
     public void deleteUserById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("User not found with Id: " + id));
+
         deleteUser(user);
     }
 
     @Transactional
     public void deleteUser(User user){
+        List<Order> orders = orderRepository.findAllUserOrders(user.getUserid());
+        for(Order order : orders){
+            if(StatusEnum.CREATED.getString().equals(order.getStatus())){
+                orderService.setOrderStatusCancelled(order.getOrderid(),user);
+            }
+        }
         userRepository.delete(user);
     }
 

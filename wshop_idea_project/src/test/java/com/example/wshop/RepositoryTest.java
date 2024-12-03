@@ -126,7 +126,7 @@ public class RepositoryTest {
         productRepository.saveAndFlush(productInactive);
 
         System.out.println("--------------------");
-        List<Product> activeProductList = productRepository.findActiveProduct();
+        List<Product> activeProductList = productRepository.findAllActiveProductsWithCategoryAndSupplier();
         activeProductList.forEach(p -> System.out.println(p));
         System.out.println("--------------------");
         List<Product> allProductList = productRepository.findAll();

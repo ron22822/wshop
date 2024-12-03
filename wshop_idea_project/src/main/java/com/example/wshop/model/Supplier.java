@@ -17,7 +17,7 @@ public class Supplier {
     @Column(nullable = false, unique = true, length = 255)
     private String suppliername;
 
-    @Lob
+    @Column(length = 1000)
     private String contactinfo;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL,

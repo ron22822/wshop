@@ -26,11 +26,11 @@ public class Product {
     private String activity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryid", nullable = false)
+    @JoinColumn(name = "categoryid", nullable = true)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplierid", nullable = false)
+    @JoinColumn(name = "supplierid", nullable = true)
     private Supplier supplier;
 }
 

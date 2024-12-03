@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +24,7 @@ public class ProfileController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ProfileDTO> getProfileById(@PathVariable Long id){
         ProfileDTO profileDTO = profileService.getProfileById(id);
@@ -36,6 +38,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<Page<ProfileDTO>> getAllProfile(
             @RequestParam(defaultValue = "0") int page,
@@ -44,6 +47,7 @@ public class ProfileController {
         return ResponseEntity.ok(profiles);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ProfileDTO> updateProfileById(@PathVariable Long id,@RequestBody ProfileDTO profileDTO){
         ProfileDTO profileDtoUpdate = profileService.updateProfileById(id,profileDTO);
