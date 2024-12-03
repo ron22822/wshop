@@ -15,7 +15,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderid;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid", nullable = false)
     private User user;
 
@@ -28,8 +28,8 @@ public class Order {
     private BigDecimal totalprice;
     private int positioncount;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
-            orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderid", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems = new HashSet<>();
 }
 

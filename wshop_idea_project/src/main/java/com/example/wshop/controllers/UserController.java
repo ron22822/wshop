@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO userDTO = userService.getById(id);
@@ -33,6 +35,7 @@ public class UserController {
         return ResponseEntity.ok(userService.mapToDto(user));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<Page<UserDTO>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -41,6 +44,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id,@RequestBody UserDTO userDTO){
         UserDTO userDtoUpdate = userService.updateUserById(id,userDTO);
@@ -54,6 +58,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userDtoUpdate);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         userService.deleteUserById(id);

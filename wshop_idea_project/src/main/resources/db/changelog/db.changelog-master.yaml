@@ -3,5 +3,3 @@ databaseChangeLog:
       file: db/changelog/db-changelog-create-table.sql
   - include:
       file: db/changelog/db-changelog-add-role.sql
-  - include:
-      file: db/changelog/db-changelog-add-admin.sql

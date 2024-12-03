@@ -15,7 +15,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     @Override
     public Optional<User> findUserWithOrders(Long id) {
         try {
-            User user = entityManager.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.orders " +
+            User user = entityManager.createQuery(
+                    "SELECT u FROM User u JOIN FETCH u.orders " +
                     "WHERE u.userid = :userID",User.class)
                     .setParameter("userID",id)
                     .getSingleResult();

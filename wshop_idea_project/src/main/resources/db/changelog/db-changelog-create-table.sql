@@ -34,13 +34,13 @@ CREATE TABLE "Order" (
 CREATE TABLE "Category" (
     categoryid SERIAL PRIMARY KEY,
     categoryname VARCHAR(255) NOT NULL,
-    info TEXT
+    info VARCHAR(1000)
 );
 --changeset baturkin:6
 CREATE TABLE "Supplier" (
     supplierid SERIAL PRIMARY KEY,
     suppliername VARCHAR(255) NOT NULL,
-    contactinfo TEXT
+    contactinfo VARCHAR(1000)
 );
 --changeset baturkin:7
 CREATE TABLE "Product" (
