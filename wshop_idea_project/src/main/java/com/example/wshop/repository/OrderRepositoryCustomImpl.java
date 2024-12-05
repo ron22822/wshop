@@ -16,7 +16,7 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
     public Optional<Order> findOrderWithOrdersItem(Long orderid) {
         String query = "SELECT o "+
                 "FROM Order o "+
-                "JOIN FETCH o.orderItems "+
+                "LEFT JOIN FETCH o.orderItems "+
                 "WHERE o.orderid = :orderID";
         try {
             Order order = entityManager.createQuery(query, Order.class)
@@ -32,7 +32,7 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
     public List<Order> findAllUserOrders(Long userid) {
         String query = "SELECT o "+
                 "FROM Order o "+
-//                "JOIN FETCH o.orderItems "+//убрать
+                "LEFT JOIN FETCH o.orderItems "+
                 "WHERE o.user.userid = :userID";
         return entityManager.createQuery(query, Order.class)
                 .setParameter("userID", userid)

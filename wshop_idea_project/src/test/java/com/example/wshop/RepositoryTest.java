@@ -192,8 +192,8 @@ public class RepositoryTest {
         orderItemId1.setOrderid(orderRet.getOrderid());
         orderItemId1.setProductid(productColaRet.getProductid());
         orderItem1.setId(orderItemId1);
-        orderItem1.setOrder(orderRet);
-        orderItem1.setProduct(productColaRet);
+        orderItem1.setOrderid(orderRet.getOrderid());
+        orderItem1.setProductid(productColaRet.getProductid());
         orderItemRepository.saveAndFlush(orderItem1);
 
         OrderItem orderItem2 = new OrderItem();
@@ -202,8 +202,8 @@ public class RepositoryTest {
         orderItemId2.setOrderid(orderRet.getOrderid());
         orderItemId2.setProductid(productSpriteRet.getProductid());
         orderItem2.setId(orderItemId2);
-        orderItem2.setOrder(orderRet);
-        orderItem2.setProduct(productSpriteRet);
+        orderItem2.setOrderid(orderRet.getOrderid());
+        orderItem2.setProductid(productSpriteRet.getProductid());
         orderItemRepository.saveAndFlush(orderItem2);
 
         entityManager.detach(userRet);
