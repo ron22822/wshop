@@ -16,8 +16,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     public Optional<User> findUserWithOrders(Long id) {
         try {
             User user = entityManager.createQuery(
-                    "SELECT u FROM User u JOIN FETCH u.orders " +
-                    "WHERE u.userid = :userID",User.class)
+                    "SELECT u FROM User u " +
+                        "LEFT JOIN FETCH u.orders " +
+                        "WHERE u.userid = :userID",User.class)
                     .setParameter("userID",id)
                     .getSingleResult();
             return Optional.of(user);
@@ -29,8 +30,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     @Override
     public Optional<User> findUserByUsername(String username) {
         try {
-            User user = entityManager.createQuery("SELECT u FROM User u " +
-                            "WHERE u.username = :Username",User.class)
+            User user = entityManager.createQuery(
+                    "SELECT u FROM User u " +
+                        "WHERE u.username = :Username",User.class)
                     .setParameter("Username",username)
                     .getSingleResult();
             return Optional.of(user);

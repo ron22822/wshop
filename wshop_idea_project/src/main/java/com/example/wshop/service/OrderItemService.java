@@ -3,6 +3,7 @@ package com.example.wshop.service;
 import com.example.wshop.constant.ActivityEnum;
 import com.example.wshop.constant.StatusEnum;
 import com.example.wshop.dto.OrderItemDTO;
+import com.example.wshop.exception.InsufficientStockException;
 import com.example.wshop.exception.InvalidRequestDataException;
 import com.example.wshop.exception.ResourceNotFoundException;
 import com.example.wshop.model.*;
@@ -45,9 +46,7 @@ public class OrderItemService {
     public List<OrderItemDTO> getAllForOrder(User user,Long orderid){
         Order order = orderRepository.findById(orderid)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + orderid));
-        if(!order.getUser().getUserid().equals(user.getUserid())){
-            throw new AccessDeniedException("Not have access rights to this user's order");
-        }
+        checkAccessRights(order,user);
         return orderItemRepository.findAllForOrder(orderid)
                 .stream().map(this::mapToDto).toList();
     }
@@ -75,11 +74,17 @@ public class OrderItemService {
         if(ActivityEnum.INACTIVE.getString().equals(product.getActivity())){
             throw new InvalidRequestDataException("Product is inactive");
         }
-        if(orderItemDTO.getItemcount() > product.getTotalquantity()){
-            throw new InvalidRequestDataException("There is not enough product "+product.getProductname()+" available");
-        }
-        if(orderItemRepository.findById(orderItemId).isPresent()){
-            deleteOrderItem(orderItemId);
+
+        if(orderItemRepository.existsById(orderItemId)){
+            OrderItem orderItem = orderItemRepository.findById(orderItemId).get();
+            if(orderItemDTO.getItemcount() > (product.getTotalquantity()+orderItem.getItemcount())){
+                throw new InsufficientStockException("There is not enough product "+product.getProductname()+" available");
+            }
+            processDeleteOrderItem(orderItem,order,product);
+        }else {
+            if(orderItemDTO.getItemcount() > product.getTotalquantity()){
+                throw new InsufficientStockException("There is not enough product "+product.getProductname()+" available");
+            }
         }
 
         product.setTotalquantity(product.getTotalquantity()-orderItemDTO.getItemcount());

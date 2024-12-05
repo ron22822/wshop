@@ -56,46 +56,40 @@ public class OrderService {
     public OrderDTO setOrderStatusCompleted(Long id){
         Order order = orderRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + id));
-        if(StatusEnum.CREATED.getString().equals(order.getStatus())){
-            order.setStatus(StatusEnum.COMPLETED.getString());
-            order = orderRepository.save(order);
-            return mapToDto(order);
-        }
-        else {
+        if(!StatusEnum.CREATED.getString().equals(order.getStatus())){
             throw new InvalidRequestDataException("The order cannot be transferred to the completed status");
         }
+        order.setStatus(StatusEnum.COMPLETED.getString());
+        order = orderRepository.save(order);
+        return mapToDto(order);
     }
 
     @Transactional
     public OrderDTO setOrderStatusCancelled(Long orderid, User user){
         Order order = orderRepository.findById(orderid)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + orderid));
-        if(order.getUser().getUserid().equals(user.getUserid())){
-            if(StatusEnum.CREATED.getString().equals(order.getStatus())){
-                List<OrderItem> orderItems = orderItemRepository.findAllForOrder(orderid);
-                for(OrderItem orderItem : orderItems){
-                    orderItemService.retTotalQuantity(orderItem);
-                }
-                order.setStatus(StatusEnum.CANCELLED.getString());
-                order = orderRepository.saveAndFlush(order);
-                return mapToDto(order);
-            }
-            else {
-                throw new InvalidRequestDataException("The order cannot be transferred to the cancelled status");
-            }
-        }else{
+        if(!order.getUser().getUserid().equals(user.getUserid())){
             throw new AccessDeniedException("Not have access rights to this user's order");
         }
+        if(!StatusEnum.CREATED.getString().equals(order.getStatus())){
+            throw new InvalidRequestDataException("This order cannot be transferred to the cancelled status");
+        }
+        List<OrderItem> orderItems = orderItemRepository.findAllForOrder(orderid);
+        for(OrderItem orderItem : orderItems){
+            orderItemService.retTotalQuantity(orderItem);
+        }
+        order.setStatus(StatusEnum.CANCELLED.getString());
+        order = orderRepository.saveAndFlush(order);
+        return mapToDto(order);
     }
 
     public void deleteOrder(Long id){
         Order order = orderRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + id));
-        if(!StatusEnum.CREATED.getString().equals(order.getStatus())){
-            orderRepository.delete(order);
-        }else {
+        if(StatusEnum.CREATED.getString().equals(order.getStatus())){
             throw new InvalidRequestDataException("Сannot delete an order that is in the CREATED status");
         }
+        orderRepository.delete(order);
     }
 
     @Transactional
