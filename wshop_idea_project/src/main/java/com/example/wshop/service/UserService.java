@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -88,20 +89,19 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDTO updateUser(User user,UserDTO userDTO){
-        if(userDTO.getUsername() != null){
-            user.setUsername(userDTO.getUsername());
-        }
-        if(userDTO.getPassword() != null){
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
-        if(userDTO.getRole() != null){
-            Role role = roleRepository.findByRolename(userDTO.getRole())
-                    .orElseThrow(() -> new ResourceNotFoundException("Role not found with rolename: " + userDTO.getRole()));
-        }
-        if(userDTO.getEmail() != null){
-            user.setEmail(userDTO.getEmail());
+        Optional<User> userOptional = userRepository.findUserByUsername(userDTO.getUsername());
+        if(userOptional.isPresent()){
+            if(!userOptional.get().getUserid().equals(user.getUserid())){
+                throw new ResourceNameAlreadyExistsException("User with username: "+userDTO.getUsername()+" already exists");
+            }
         }
 
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        Role role = roleRepository.findByRolename(userDTO.getRole())
+                    .orElseThrow(() -> new ResourceNotFoundException("Role not found with rolename: " + userDTO.getRole()));
+        user.setRole(role);
+        user.setEmail(userDTO.getEmail());
         User userUpdate = userRepository.saveAndFlush(user);
         return mapToDto(userUpdate);
     }
@@ -110,7 +110,6 @@ public class UserService implements UserDetailsService {
     public void deleteUserById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("User not found with Id: " + id));
-
         deleteUser(user);
     }
 
@@ -144,9 +143,7 @@ public class UserService implements UserDetailsService {
                 request.getUsername(),
                 request.getPassword()
         ));
-
         var user = loadUserByUsername(request.getUsername());
-
         var jwt = jwtTokenProvider.generateToken(user);
         return new JwtResponse(jwt);
     }

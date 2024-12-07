@@ -39,22 +39,16 @@ public class ProfileService {
     public ProfileDTO updateProfileById(Long id,ProfileDTO profileDTO){
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with Id: " + id));
-        if(profileDTO.getFirstname() != null){
-            profile.setFirstname(profileDTO.getFirstname());
-        }
-        if(profileDTO.getLastname() != null){
-            profile.setLastname(profileDTO.getLastname());
-        }
+        profile.setFirstname(profileDTO.getFirstname());
+        profile.setLastname(profileDTO.getLastname());
         if(profileDTO.getBirthday() != null){
             profile.setBirthday(Date.valueOf(profileDTO.getBirthday()));
-        }
-        if(profileDTO.getGender() != null){
-            profile.setGender(profileDTO.getGender());
-        }
-
+        }else profile.setBirthday(null);
+        profile.setGender(profileDTO.getGender());
         Profile profileUpdate = profileRepository.saveAndFlush(profile);
         return mapToDto(profileUpdate);
     }
+
 
     public ProfileDTO mapToDto(Profile profile){
         ProfileDTO profileDTO = new ProfileDTO();

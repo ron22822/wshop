@@ -66,27 +66,21 @@ public class ProductService {
     public ProductDTO updateProductById(Long id,ProductDTO productDTO){
         Product product = productRepository.findById(id).
                 orElseThrow(()  -> new ResourceNotFoundException("Product not found with Id: " + id));
-        if(productDTO.getProductname() != null) product.setProductname(productDTO.getProductname());
-        if(productDTO.getPrice() != null) product.setPrice(productDTO.getPrice());
-        if(productDTO.getTotalquantity() != null) product.setTotalquantity(productDTO.getTotalquantity());
-        if(productDTO.getActivity() != null){
-            if(ActivityEnum.ACTIVE.getString().equals(productDTO.getActivity())
-                    || ActivityEnum.INACTIVE.getString().equals(productDTO.getActivity()) ){
-                product.setActivity(productDTO.getActivity());
-            } else{
-                throw new InvalidRequestDataException("Undefined activity state");
-            }
+        product.setProductname(productDTO.getProductname());
+        product.setPrice(productDTO.getPrice());
+        product.setTotalquantity(productDTO.getTotalquantity());
+        if(ActivityEnum.ACTIVE.getString().equals(productDTO.getActivity())
+                || ActivityEnum.INACTIVE.getString().equals(productDTO.getActivity()) ){
+            product.setActivity(productDTO.getActivity());
+        } else{
+            throw new InvalidRequestDataException("Undefined activity state");
         }
-        if(productDTO.getCategoryname() != null){
-            Category category = categoryRepository.findByCategoryname(productDTO.getCategoryname())
-                    .orElseThrow(()  -> new InvalidRequestDataException("Invalid category name"));
-            product.setCategory(category);
-        }
-        if(productDTO.getSuppliername() != null){
-            Supplier supplier = supplierRepository.findBySuppliername(productDTO.getSuppliername())
-                    .orElseThrow(()  -> new InvalidRequestDataException("Invalid supplier name"));
-            product.setSupplier(supplier);
-        }
+        Category category = categoryRepository.findByCategoryname(productDTO.getCategoryname())
+                .orElseThrow(()  -> new InvalidRequestDataException("Invalid category name"));
+        product.setCategory(category);
+        Supplier supplier = supplierRepository.findBySuppliername(productDTO.getSuppliername())
+                .orElseThrow(()  -> new InvalidRequestDataException("Invalid supplier name"));
+        product.setSupplier(supplier);
         Product productUpdate = productRepository.save(product);
         return mapToDto(productUpdate);
     }
@@ -125,7 +119,7 @@ public class ProductService {
         || ActivityEnum.INACTIVE.getString().equals(productDTO.getActivity()) ){
             product.setActivity(productDTO.getActivity());
         } else{
-            throw new InvalidRequestDataException("Undefined activity state");
+            throw new InvalidRequestDataException("Activity state must be "+ActivityEnum.ACTIVE.getString()+" or "+ActivityEnum.INACTIVE.getString());
         }
         Category category = categoryRepository.findByCategoryname(productDTO.getCategoryname())
                 .orElseThrow(()  -> new InvalidRequestDataException("Invalid category name"));
@@ -133,7 +127,6 @@ public class ProductService {
                 .orElseThrow(()  -> new InvalidRequestDataException("Invalid supplier name"));
         product.setCategory(category);
         product.setSupplier(supplier);
-
         return product;
     }
 }

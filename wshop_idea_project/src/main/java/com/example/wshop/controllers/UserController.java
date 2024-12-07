@@ -3,6 +3,7 @@ package com.example.wshop.controllers;
 import com.example.wshop.dto.UserDTO;
 import com.example.wshop.model.User;
 import com.example.wshop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -46,13 +47,13 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id,@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id,@Valid @RequestBody UserDTO userDTO){
         UserDTO userDtoUpdate = userService.updateUserById(id,userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDtoUpdate);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> updateCurrentUser(@Valid @RequestBody UserDTO userDTO){
         User user = userService.getCurrentUser();
         UserDTO userDtoUpdate = userService.updateUser(user,userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDtoUpdate);

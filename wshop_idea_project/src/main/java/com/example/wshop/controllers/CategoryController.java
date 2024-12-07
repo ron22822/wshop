@@ -2,6 +2,7 @@ package com.example.wshop.controllers;
 
 import com.example.wshop.dto.CategoryDTO;
 import com.example.wshop.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -36,14 +37,14 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
         CategoryDTO category = categoryService.createCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategoryById(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> updateCategoryById(@PathVariable Long id,@Valid @RequestBody CategoryDTO categoryDTO){
         CategoryDTO categoryDtoUpdate = categoryService.updateCategoryById(id,categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoUpdate);
     }

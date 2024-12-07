@@ -1,0 +1,1451 @@
+{
+	"info": {
+		"_postman_id": "7d63d7dd-045c-468a-8236-4771eaff25b6",
+		"name": "Web Shop Boot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39776568"
+	},
+	"item": [
+		{
+			"name": "Welcome",
+			"item": [
+				{
+					"name": "welcome string",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"user_user\",\r\n    \"password\" : \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "regs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"user_user3\",\r\n    \"password\" : \"password\",\r\n    \"role\" : \"USER\",\r\n    \"email\" : \"m@m.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/auth/register",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get user me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/9",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user_user3\",\r\n    \"password\": \"password\",\r\n    \"role\": \"USER\",\r\n    \"email\" : \"update333@mail.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"update_id@mail.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/9",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/user/7",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"user",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get profile all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/profile/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"profile",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/profile/9",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"profile",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/profile/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"2-teset_fname\",\r\n    \"lastname\" : \"teset_lname\",\r\n    \"birthday\" : \"2010-12-29\",\r\n    \"gender\" : \"male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/profile/9",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"profile",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"teset_fname\",\r\n    \"lastname\" : \"teset_lname\",\r\n    \"birthday\" : \"2011-12-29\",\r\n    \"gender\" : \"Male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/profile/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Get category for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/category/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/category/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"category",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoryname\" : \"category_3\",\r\n    \"info\" : \"its test Category\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/category",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updete category for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoryname\" : \"category_3\",\r\n    \"info\" : \"its test Category444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/category/3",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"category",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/category/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supplier",
+			"item": [
+				{
+					"name": "Get supplier for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/supplier/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"supplier",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get supplier all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/supplier/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"supplier",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create supplier",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"suppliername\" : \"supplier_2\",\r\n    \"contactinfo\" : \"info_test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/supplier",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"supplier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update supplier for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactinfo\" : \"update_info_test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/supplier/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"supplier",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete supplier for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/supplier/2",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"supplier",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get product for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product all active",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/active",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product filter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoryId\" : \"1\",\r\n    \"supplierId\" : \"1\",\r\n    \"minQuantity\" : \"10\",\r\n    \"maxQuantity\" : \"1001\",\r\n    \"minPrice\" : \"50\",\r\n    \"maxPrice\" : \"1001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/filter",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productname\" : \"product_valid\",\r\n    \"price\" : \"1000.12\",\r\n    \"totalquantity\" : \"0\",\r\n    \"activity\" : \"ACTIVE\",\r\n    \"categoryname\" : \"category_1\",\r\n    \"suppliername\" : \"supplier_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productname\" : \"product_valid\",\r\n    \"price\" : \"1000.12\",\r\n    \"totalquantity\" : \"300\",\r\n    \"activity\" : \"ACTIVE\",\r\n    \"categoryname\" : \"category_1\",\r\n    \"suppliername\" : \"supplier_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/4",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/product/1",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Get order for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/6",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order all me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/all/me",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"all",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set order status cancelled",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/cancelled/4",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"cancelled",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set order status completed",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/completed/4",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"completed",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/order/7",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"order",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderItem",
+			"item": [
+				{
+					"name": "Get All Order Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/orderitem/all",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"orderitem",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Order Item for orderid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{localhost_80xx}}/orderitem/order/5",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"orderitem",
+								"order",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderid\" : \"6\",\r\n    \"productid\" : \"4\",\r\n    \"itemcount\" : \"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/orderitem",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"orderitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderid\" : \"6\",\r\n    \"productid\" : \"4\",\r\n    \"itemcount\" : \"200\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/orderitem",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"orderitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderid\" : \"6\",\r\n    \"productid\" : \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{localhost_80xx}}/orderitem",
+							"protocol": "http",
+							"host": [
+								"{{localhost_80xx}}"
+							],
+							"path": [
+								"orderitem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
