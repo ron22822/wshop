@@ -20,7 +20,7 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @Column(length = 255)
+    @Column(nullable = false, length = 255)
     private String email;
 
     @ManyToOne(fetch = FetchType.EAGER)

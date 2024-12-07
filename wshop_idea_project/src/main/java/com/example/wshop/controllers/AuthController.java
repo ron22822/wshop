@@ -9,6 +9,7 @@ import com.example.wshop.repository.RoleRepository;
 import com.example.wshop.repository.UserRepository;
 import com.example.wshop.security.JwtTokenProvider;
 import com.example.wshop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO){
         UserDTO user = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

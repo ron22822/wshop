@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class CategoryService {
 
@@ -50,12 +52,16 @@ public class CategoryService {
     public CategoryDTO updateCategoryById(Long id,CategoryDTO categoryDTO){
         Category category = categoryRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Category not found with Id: " + id));
-        if(categoryDTO.getCategoryname() != null){
-            category.setCategoryname(categoryDTO.getCategoryname());
+        Optional<Category> categoryOptional = categoryRepository.findByCategoryname(categoryDTO.getCategoryname());
+        if(categoryOptional.isPresent()){
+            if(!id.equals(categoryOptional.get().getCategoryid())){
+                throw new ResourceNameAlreadyExistsException(
+                        "Category with category name: "+categoryDTO.getCategoryname()
+                                +" already exists");
+            }
         }
-        if(categoryDTO.getInfo() != null){
-          category.setInfo(categoryDTO.getInfo());
-        }
+        category.setCategoryname(categoryDTO.getCategoryname());
+        category.setInfo(categoryDTO.getInfo());
         Category categoryUpdate = categoryRepository.save(category);
         return mapToDto(categoryUpdate);
     }

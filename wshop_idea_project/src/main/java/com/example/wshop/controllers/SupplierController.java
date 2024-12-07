@@ -2,6 +2,7 @@ package com.example.wshop.controllers;
 
 import com.example.wshop.dto.SupplierDTO;
 import com.example.wshop.service.SupplierService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -36,14 +37,14 @@ public class SupplierController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<SupplierDTO> createSupplier(@RequestBody SupplierDTO supplierDTO) {
+    public ResponseEntity<SupplierDTO> createSupplier(@Valid @RequestBody SupplierDTO supplierDTO) {
         SupplierDTO supplier = supplierService.createSupplier(supplierDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(supplier);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<SupplierDTO> updateSupplierById(@PathVariable Long id, @RequestBody SupplierDTO supplierDTO) {
+    public ResponseEntity<SupplierDTO> updateSupplierById(@PathVariable Long id,@Valid @RequestBody SupplierDTO supplierDTO) {
         SupplierDTO updatedSupplier = supplierService.updateSupplierById(id, supplierDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedSupplier);
     }

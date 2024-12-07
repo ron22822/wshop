@@ -7,6 +7,7 @@ import com.example.wshop.model.OrderItemId;
 import com.example.wshop.model.User;
 import com.example.wshop.service.OrderItemService;
 import com.example.wshop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -52,14 +53,14 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemDTO> createOrderItem(@RequestBody OrderItemDTO orderItemDTO){
+    public ResponseEntity<OrderItemDTO> createOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO){
         User user = userService.getCurrentUser();
         OrderItemDTO orderItem = orderItemService.createOrderItem(user,orderItemDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderItem);
     }
 
     @PutMapping
-    public ResponseEntity<OrderItemDTO> updateOrderItem(@RequestBody OrderItemDTO orderItemDTO){
+    public ResponseEntity<OrderItemDTO> updateOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO){
         User user = userService.getCurrentUser();
         OrderItemDTO orderItem = orderItemService.createOrderItem(user,orderItemDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderItem);

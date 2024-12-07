@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class SupplierService {
 
@@ -49,12 +51,15 @@ public class SupplierService {
     public SupplierDTO updateSupplierById(Long id, SupplierDTO supplierDTO) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with Id: " + id));
-        if (supplierDTO.getSuppliername() != null) {
-            supplier.setSuppliername(supplierDTO.getSuppliername());
+        Optional<Supplier> supplierOptional = supplierRepository.findBySuppliername(supplierDTO.getSuppliername());
+        if(supplierOptional.isPresent()){
+            if(!id.equals(supplierOptional.get().getSupplierid())){
+                throw new ResourceNameAlreadyExistsException(
+                        "Supplier with supplier name: " + supplierDTO.getSuppliername() + " already exists");
+            }
         }
-        if (supplierDTO.getContactinfo() != null) {
-            supplier.setContactinfo(supplierDTO.getContactinfo());
-        }
+        supplier.setSuppliername(supplierDTO.getSuppliername());
+        supplier.setContactinfo(supplierDTO.getContactinfo());
         Supplier updatedSupplier = supplierRepository.save(supplier);
         return mapToDto(updatedSupplier);
     }

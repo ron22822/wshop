@@ -6,6 +6,7 @@ import com.example.wshop.dto.ProductFilter;
 import com.example.wshop.model.User;
 import com.example.wshop.service.ProductService;
 import com.example.wshop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,14 +62,14 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO createdProduct = productService.createProduct(productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id,@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO updatedProduct = productService.updateProductById(id, productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedProduct);
     }

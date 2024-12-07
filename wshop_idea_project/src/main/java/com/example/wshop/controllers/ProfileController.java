@@ -4,6 +4,7 @@ import com.example.wshop.dto.ProfileDTO;
 import com.example.wshop.model.User;
 import com.example.wshop.service.ProfileService;
 import com.example.wshop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -49,13 +50,13 @@ public class ProfileController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<ProfileDTO> updateProfileById(@PathVariable Long id,@RequestBody ProfileDTO profileDTO){
+    public ResponseEntity<ProfileDTO> updateProfileById(@PathVariable Long id,@Valid @RequestBody ProfileDTO profileDTO){
         ProfileDTO profileDtoUpdate = profileService.updateProfileById(id,profileDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(profileDtoUpdate);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ProfileDTO> updateCurrentProfile(@RequestBody ProfileDTO profileDTO){
+    public ResponseEntity<ProfileDTO> updateCurrentProfile(@Valid @RequestBody ProfileDTO profileDTO){
         User user = userService.getCurrentUser();
         ProfileDTO profileDtoUpdate = profileService.updateProfileById(user.getUserid(),profileDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(profileDtoUpdate);
