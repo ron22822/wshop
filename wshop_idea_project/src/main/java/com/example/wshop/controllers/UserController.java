@@ -72,6 +72,4 @@ public class UserController {
         userService.deleteUser(user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Your user successfully deleted");
     }
-
-
 }
