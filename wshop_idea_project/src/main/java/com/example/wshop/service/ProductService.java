@@ -85,6 +85,7 @@ public class ProductService {
         return mapToDto(productUpdate);
     }
 
+    @Transactional
     public void deleteProductById(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Product not found with Id: " + id));

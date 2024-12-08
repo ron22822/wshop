@@ -53,6 +53,7 @@ public class OrderService {
         return orders.map(this::mapToDto);
     }
 
+    @Transactional
     public OrderDTO setOrderStatusCompleted(Long id){
         Order order = orderRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + id));
@@ -83,6 +84,7 @@ public class OrderService {
         return mapToDto(order);
     }
 
+    @Transactional
     public void deleteOrder(Long id){
         Order order = orderRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + id));
