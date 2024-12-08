@@ -17,6 +17,7 @@ public class ProductDTO {
 
     @NotNull(message = "Price cannot be null")
     @Digits(integer = 10, fraction = 2, message = "Number must have at most 10 digits before and 2 after the decimal point")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
 
     @NotNull(message = "Total quantity cannot be null")

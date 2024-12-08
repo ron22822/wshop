@@ -1,0 +1,5 @@
+docker run --name wshop_postgres_db -p 5432:5432 -e POSTGRES_PASSWORD=333 -d postgres:15
+
+docker-compose up --build
+
+docker-compose down -v

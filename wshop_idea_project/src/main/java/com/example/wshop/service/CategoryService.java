@@ -66,6 +66,7 @@ public class CategoryService {
         return mapToDto(categoryUpdate);
     }
 
+    @Transactional
     public void deleteCategoryById(Long id){
         Category category = categoryRepository.findById(id)
                 .orElseThrow(()  -> new ResourceNotFoundException("Category not found with Id: " + id));

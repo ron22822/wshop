@@ -64,6 +64,7 @@ public class SupplierService {
         return mapToDto(updatedSupplier);
     }
 
+    @Transactional
     public void deleteSupplierById(Long id) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with Id: " + id));

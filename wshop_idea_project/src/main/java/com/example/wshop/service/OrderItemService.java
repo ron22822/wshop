@@ -5,6 +5,7 @@ import com.example.wshop.constant.StatusEnum;
 import com.example.wshop.dto.OrderItemDTO;
 import com.example.wshop.exception.InsufficientStockException;
 import com.example.wshop.exception.InvalidRequestDataException;
+import com.example.wshop.exception.ResourceNameAlreadyExistsException;
 import com.example.wshop.exception.ResourceNotFoundException;
 import com.example.wshop.model.*;
 import com.example.wshop.repository.OrderItemRepository;
@@ -66,6 +67,36 @@ public class OrderItemService {
         OrderItemId orderItemId = new OrderItemId();
         orderItemId.setProductid(product.getProductid());
         orderItemId.setOrderid(order.getOrderid());
+        checkAccessRights(order,user);
+
+        if(!checkOrderStatusIsCreated(order)){
+            throw new InvalidRequestDataException("Order is completed or cancelled");
+        }
+        if(ActivityEnum.INACTIVE.getString().equals(product.getActivity())){
+            throw new InvalidRequestDataException("Product is inactive");
+        }
+        if(orderItemRepository.existsById(orderItemId)){
+            throw new ResourceNameAlreadyExistsException("Order item with"+
+                                                " product id: "+product.getProductid()+
+                                                " order id "+order.getOrderid()+
+                                                " already exist");
+        }
+        if(orderItemDTO.getItemcount() > product.getTotalquantity()){
+            throw new InsufficientStockException("There is not enough product "+product.getProductname()+" available");
+        }
+
+        return mapToDto(processCreateOrderItem(orderItemId,orderItemDTO,order,product));
+    }
+
+    @Transactional
+    public OrderItemDTO updateOrderItem(User user, OrderItemDTO orderItemDTO){
+        Product product = productRepository.findById(orderItemDTO.getProductid()).
+                orElseThrow(()  -> new ResourceNotFoundException("Product not found with Id: " + orderItemDTO.getProductid()));
+        Order order = orderRepository.findById(orderItemDTO.getOrderid())
+                .orElseThrow(()  -> new ResourceNotFoundException("Order not found with Id: " + orderItemDTO.getOrderid()));
+        OrderItemId orderItemId = new OrderItemId();
+        orderItemId.setProductid(product.getProductid());
+        orderItemId.setOrderid(order.getOrderid());
 
         checkAccessRights(order,user);
         if(!checkOrderStatusIsCreated(order)){
@@ -87,6 +118,10 @@ public class OrderItemService {
             }
         }
 
+        return mapToDto(processCreateOrderItem(orderItemId,orderItemDTO,order,product));
+    }
+
+    private OrderItem processCreateOrderItem(OrderItemId orderItemId, OrderItemDTO orderItemDTO, Order order, Product product){
         product.setTotalquantity(product.getTotalquantity()-orderItemDTO.getItemcount());
         productRepository.save(product);
         order.setPositioncount(order.getPositioncount()+1);
@@ -101,8 +136,7 @@ public class OrderItemService {
         orderItem.setOrderid(order.getOrderid());
         orderItem.setProductid(product.getProductid());
         orderItem = orderItemRepository.save(orderItem);
-
-        return mapToDto(orderItem);
+        return orderItem;
     }
 
     @Transactional
@@ -140,7 +174,7 @@ public class OrderItemService {
         for(OrderItem orderItem : orderItems){
             Order order = orderRepository.findById(orderItem.getOrderid()).get();
             if(!checkOrderStatusIsCreated(order)){
-                return;
+                continue;
             }
             processDeleteOrderItem(orderItem,order,product);
         }

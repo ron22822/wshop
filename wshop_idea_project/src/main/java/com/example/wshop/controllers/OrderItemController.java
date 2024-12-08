@@ -62,7 +62,7 @@ public class OrderItemController {
     @PutMapping
     public ResponseEntity<OrderItemDTO> updateOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO){
         User user = userService.getCurrentUser();
-        OrderItemDTO orderItem = orderItemService.createOrderItem(user,orderItemDTO);
+        OrderItemDTO orderItem = orderItemService.updateOrderItem(user,orderItemDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderItem);
     }
 
